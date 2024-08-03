@@ -50,6 +50,20 @@ services:
           cpus: "1"
           memory: 1g
 
+  phpmyadmin:
+    image: phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    networks:
+      - my_network
+    ports:
+      - "3001:80"
+
   memcached:
     image: memcached:1.6
     networks:
