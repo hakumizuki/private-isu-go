@@ -40,11 +40,10 @@ services:
       #- "TZ=Asia/Tokyo"
       - MYSQL_ROOT_HOST=%
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_ENABLE_SLOW_QUERY=1
-      - MYSQL_LONG_QUERY_TIME=0
     volumes:
       - mysql:/bitnami/mysql
       - ./sql:/docker-entrypoint-initdb.d
+      - ./etc/mysql/conf.d/my.cnf:/opt/bitnami/mysql/conf/my_custom.cnf # see: https://github.com/bitnami/containers/blob/ea6952de6b9f4fdd26c74e0e5cda2927fade3e27/bitnami/mysql/8.4/debian-12/rootfs/opt/bitnami/scripts/libmysql.sh#L369
     ports:
       - "3306:3306"
     networks:
