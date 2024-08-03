@@ -5,6 +5,7 @@ services:
     volumes:
       - ./etc/nginx/conf.d:/etc/nginx/conf.d
       - ./public:/public
+      - ./logs/nginx:/var/log/nginx
     ports:
       - "80:80"
     networks:
@@ -31,14 +32,18 @@ services:
           cpus: "1"
           memory: 1g
 
+  # bitnami のイメージは環境変数でしか変えることができない
+  # 設定可能な値は: https://hub.docker.com/r/bitnami/mysql > Customizable environment variables
   mysql:
-    image: mysql:8.4
+    image: bitnami/mysql:8.4
     environment:
       #- "TZ=Asia/Tokyo"
-      - "MYSQL_ROOT_HOST=%"
-      - "MYSQL_ROOT_PASSWORD=root"
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ENABLE_SLOW_QUERY=1
+      - MYSQL_LONG_QUERY_TIME=0
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql:/bitnami/mysql
       - ./sql:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
